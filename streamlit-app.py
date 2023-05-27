@@ -3,6 +3,9 @@ import pandas as pd
 import pickle 
 from sklearn.neighbors import KNeighborsClassifier
 
+loaded_model = pickle.load(open('knnpickle_file', 'rb'))
+result = loaded_model.predict(test_df.drop('Survived', axis=1))
+
 st.write("""
 # Simple Iris Flower Prediction App
 
