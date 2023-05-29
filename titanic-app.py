@@ -21,11 +21,11 @@ hide_default_format = """
 st.markdown(hide_default_format, unsafe_allow_html=True)
 
 
-st.write("<h1 style='width:100%;margin:auto;'>Would you survive sinking of the Titanic?</h1>", 
-         '<p><i>To find out your chances of survival answer the questions on the left sidebar.</i></p>', 
+st.write("<h1 style='text-align:center'>Would you survive sinking of the Titanic?</h1>", 
+         "<p style='text-align:center'><i>To find out your chances of survival answer the questions on the left sidebar.</i></p><br><br>",
          unsafe_allow_html=True)
 
-st.sidebar.header('User Input:')
+st.sidebar.write('<h4><u>User Input</u></h4>', unsafe_allow_html=True)
 
 def get_features():
     Sex = st.sidebar.radio(
@@ -59,15 +59,58 @@ def get_features():
             '№ of Parents and/or children': Parch,
             'Socio-econocmic status': Pclass,
             'Fare': Fare,
-            'Embarked': Embarked}
+            'Embarkation Port': Embarked}
     return pd.DataFrame(data, index=[0])
 
 data = get_features()
 
-st.subheader('User Input parameters')
-st.table(data)
+st.write("<div style='margin-left: 10%;'><h4><u>User Input Parameters</u></h4></div>", unsafe_allow_html=True)
+st.write(
+    """
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border: 3px solid #07375E;
+            border-collapse: collapse;
+            width: 80%;
+            margin-left: 10%;
+            }
+        
+        th {
+            background-color: #07375E;
+        }
 
-# prepare data for prediction
+        td {
+            background-color: #09406E;
+            }
+    </style>
+    """ +
+    f"""
+    <table>
+        <tr>
+            <th>Sex</th>
+            <th>Age</th>
+            <th>№ of Siblings and/or Spouse</th>
+            <th>№ of Parents and/or children</th>
+            <th>Socio-econocmic status</th>
+            <th>Fare</th>
+            <th>Embarkation Port</th>
+        </tr>
+        <tr>
+            <td>{data.iloc[0, 0]}</td>
+            <td>{data.iloc[0, 1]}</td>
+            <td>{data.iloc[0, 2]}</td>
+            <td>{data.iloc[0, 3]}</td>
+            <td>{data.iloc[0, 4]}</td>
+            <td>{data.iloc[0, 5]}</td>
+            <td>{data.iloc[0, 6]}</td>
+        </tr>
+    </table>
+    """, 
+    unsafe_allow_html=True
+    )
+
+# prepare user unput data for prediction
 pclass_map = {"Upper Class" : 1, "Middle Class" : 2, "Lower Class" : 3}
 data['Socio-econocmic status'] = data['Socio-econocmic status'].map(pclass_map)
 
@@ -77,12 +120,12 @@ data['Sex'] = data['Sex'].map(sex_map)
 data['Embarked_Q'] = 0
 data['Embarked_S'] = 0
 
-if data.loc[0, 'Embarked'] == 'Queenstown':
-    data['Embarked_Q'] = 1
-if data.loc[0, 'Embarked'] == 'Southampton':
-    data['Embarked_S'] = 1
+if data.loc[0, 'Embarkation Port'] == 'Queenstown':
+    data['Embarkation Port'] = 1
+if data.loc[0, 'Embarkation Port'] == 'Southampton':
+    data['Embarkation Port'] = 1
 
-data.drop('Embarked', axis=1, inplace=True)
+data.drop('Embarkation Port', axis=1, inplace=True)
 data = data[[
     'Socio-econocmic status', 'Age', '№ of Siblings and/or Spouse',
     '№ of Parents and/or children', 'Fare', 'Sex', 'Embarked_Q',
@@ -92,20 +135,20 @@ data.columns = ['Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Sex_male', 'Embarked
     'Embarked_S']
 
 # load model and predict
-st.subheader('Prediction')
+st.write("<br><br><div style='margin-left: 10%;'><h4><u>Prediction</u></h4></div>", unsafe_allow_html=True)
 model_Pickle = pickle.load(open('model_Pickle', 'rb'))
 preds = model_Pickle.predict(data)
 prediction_proba = model_Pickle.predict_proba(data)
 
+
 # print results
 if prediction_proba[0][0]>=0.6:
-    st.write(f'<p>With <b style="color:red">{int((prediction_proba[0][preds][0]*100).round())}%</b> confidence I can say you would <b style="color:red">sink alongside the Titanic!</b>🥲</p>', unsafe_allow_html=True)
+    st.write(f"<div style='margin-left: 10%;'><p>With <span style='color:red'>{int((prediction_proba[0][preds][0]*100).round())}%</span> confidence I can say you would <span style='color:red'>sink alongside the Titanic!</span>🥲</p></div>", unsafe_allow_html=True)
 elif prediction_proba[0][0]>0.5:
-    st.write('<p>Well, the results are ambiguous. Though, your chances are <b style="color:red">slightly more skewed towards NOT surviving.</b>🤨</p>', unsafe_allow_html=True)
+    st.write("<div style='margin-left: 10%;'><p>Well, the results are ambiguous. Though, your chances are <span style='color:red'>slightly more skewed towards NOT surviving.</span>🤨</p></div>", unsafe_allow_html=True)
 elif prediction_proba[0][0]==0.5:
-    st.write('<p>Well, what do you know. Your chances are <b style="color:red">fifty-fifty!</b>😏</p>', unsafe_allow_html=True)
+    st.write("<div style='margin-left: 10%;'><p>Well, what do you know. Your chances are <span style='color:red'>fifty-fifty!</span>😏</p></div>", unsafe_allow_html=True)
 elif prediction_proba[0][0]<0.4:
-    st.write(f'<p>With <b style="color:red">{int((prediction_proba[0][preds][0]*100).round())}%</b> confidence I can say you would <b style="color:red">survive sinking of the Titanic!</b>😉👌</p>', unsafe_allow_html=True)
+    st.write(f"<div style='margin-left: 10%;'><p>With <span style='color:red'>{int((prediction_proba[0][preds][0]*100).round())}%</span> confidence I can say you would <span style='color:red'>survive sinking of the Titanic!</span>😉👌</p></div>", unsafe_allow_html=True)
 else:
-    st.write('<p>Well, the results are ambiguous. Still, your chances are <b style="color:red">slightly more skewed towards surviving.</b>😊</p>', unsafe_allow_html=True)
-
+    st.write("<div style='margin-left: 10%;'><p>Well, the results are ambiguous. Still, your chances are <span style='color:red'>slightly more skewed towards surviving.</span>😊</p></div>", unsafe_allow_html=True)

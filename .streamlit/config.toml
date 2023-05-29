@@ -4,8 +4,8 @@ font="serif"
 
 primaryColor = 'red'
 
-backgroundColor = '#00325c'
+backgroundColor = '#0B4A7E'
 
-secondaryBackgroundColor = '0B4A7E'
+secondaryBackgroundColor = '#00325c'
 
 textColor = 'white'
