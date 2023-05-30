@@ -45,10 +45,10 @@ def get_features():
         ("Upper Class", "Middle Class", "Lower Class")
         )
     Fare = st.sidebar.slider(
-        "How much would you pay for the ticket? (0 if you won it or sneaked in)", 0, 100, 20, 1
+        "How much would you pay for the ticket?", 0, 100, 20, 1
         )
     Embarked = st.sidebar.radio(
-        "There wera 3 embarkation ports. From which port would you board the ship?",
+        "There were 3 embarkation ports. From which port would you board the ship?",
         ("Cherbourg", "Queenstown", "Southampton")
         )
 
