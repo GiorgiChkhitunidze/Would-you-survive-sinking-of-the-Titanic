@@ -15,6 +15,7 @@ st.set_page_config(
 # hide footer and main menu icon
 hide_default_format = """
        <style>
+       #MainMenu {visibility: hidden;}
        footer {visibility: hidden;}
        </style>
        """
@@ -143,12 +144,12 @@ prediction_proba = model_Pickle.predict_proba(data)
 
 # print results
 if prediction_proba[0][0]>=0.6:
-    st.write(f"<div style='margin-left: 10%;'><p>With <span style='color:red'>{int((prediction_proba[0][preds][0]*100).round())}%</span> confidence I can say you would <span style='color:red'>sink alongside the Titanic!</span>🥲</p></div>", unsafe_allow_html=True)
+    st.write(f"<div style='margin-left: 10%;'><p>With <u style='color:red'><em>{int((prediction_proba[0][preds][0]*100).round())}%</em></u> confidence I can say you would <u style='color:red'><em>sink alongside the Titanic!</em></u>🥲</p></div>", unsafe_allow_html=True)
 elif prediction_proba[0][0]>0.5:
-    st.write("<div style='margin-left: 10%;'><p>Well, the results are ambiguous. Though, your chances are <span style='color:red'>slightly more skewed towards NOT surviving.</span>🤨</p></div>", unsafe_allow_html=True)
+    st.write("<div style='margin-left: 10%;'><p>Well, the results are ambiguous. Though, your chances are <u style='color:red'><em>slightly more skewed towards NOT surviving.</em></u>🤨</p></div>", unsafe_allow_html=True)
 elif prediction_proba[0][0]==0.5:
-    st.write("<div style='margin-left: 10%;'><p>Well, what do you know. Your chances are <span style='color:red'>fifty-fifty!</span>😏</p></div>", unsafe_allow_html=True)
+    st.write("<div style='margin-left: 10%;'><p>Well, what do you know. Your chances are <u style='color:red'><em>fifty-fifty!</em></u>😏</p></div>", unsafe_allow_html=True)
 elif prediction_proba[0][0]<0.4:
-    st.write(f"<div style='margin-left: 10%;'><p>With <span style='color:red'>{int((prediction_proba[0][preds][0]*100).round())}%</span> confidence I can say you would <span style='color:red'>survive sinking of the Titanic!</span>😉👌</p></div>", unsafe_allow_html=True)
+    st.write(f"<div style='margin-left: 10%;'><p>With <u style='color:red'><em>{int((prediction_proba[0][preds][0]*100).round())}%</em></u> confidence I can say you would <u style='color:red'><em>survive sinking of the Titanic!</em></u>😉👌</p></div>", unsafe_allow_html=True)
 else:
-    st.write("<div style='margin-left: 10%;'><p>Well, the results are ambiguous. Still, your chances are <span style='color:red'>slightly more skewed towards surviving.</span>😊</p></div>", unsafe_allow_html=True)
+    st.write("<div style='margin-left: 10%;'><p>Well, the results are ambiguous. Still, your chances are <u style='color:red'><em>slightly more skewed towards surviving.</em></u>😊</p></div>", unsafe_allow_html=True)
